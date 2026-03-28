@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Job Matcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-logo">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="11" cy="11" r="10" stroke="var(--accent)" stroke-width="1.5"/>
+          <path d="M7 11h8M11 7v8" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="11" cy="11" r="3" fill="var(--accent)" opacity="0.3"/>
+        </svg>
+        <span class="logo-text">JobMatch<span class="logo-dot">.</span>ai</span>
+      </div>
+      <div class="header-badge">BETA</div>
+    </header>
+
+    <!-- Upload Screen -->
+    <div id="screen-upload" class="screen active">
+      <div class="upload-headline">
+        <div class="headline-tag">// ANALYZE YOUR RESUME</div>
+        <h1>Find your <em>perfect</em><br/>job match</h1>
+        <p class="subtitle">Drop your resume. Let AI do the heavy lifting.</p>
+      </div>
+
+      <div class="upload-zone" id="dropZone">
+        <div class="upload-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <rect x="8" y="6" width="24" height="28" rx="3" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <path d="M14 16h12M14 21h8M14 26h6" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="28" cy="28" r="7" fill="var(--bg-card)" stroke="var(--accent)" stroke-width="1.5"/>
+            <path d="M28 25v6M25 28h6" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="upload-text">
+          <span class="upload-primary">Drop your PDF here</span>
+          <span class="upload-secondary">or click to browse</span>
+        </div>
+        <input type="file" id="fileInput" accept=".pdf" hidden />
+      </div>
+
+      <div class="file-info" id="fileInfo" style="display:none;">
+        <div class="file-icon">📄</div>
+        <div class="file-details">
+          <span class="file-name" id="fileName"></span>
+          <span class="file-size" id="fileSize"></span>
+        </div>
+        <button class="file-remove" id="removeFile">✕</button>
+      </div>
+
+      <button class="btn-analyze" id="analyzeBtn" disabled>
+        <span class="btn-text">Analyze Resume</span>
+        <span class="btn-arrow">→</span>
+      </button>
+
+      <p class="privacy-note">🔒 Processed locally via Anthropic API. Nothing stored.</p>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="screen-loading" class="screen">
+      <div class="loading-container">
+        <div class="loading-orb">
+          <div class="orb-ring ring-1"></div>
+          <div class="orb-ring ring-2"></div>
+          <div class="orb-ring ring-3"></div>
+          <div class="orb-core"></div>
+        </div>
+        <div class="loading-steps">
+          <div class="step active" id="step1">
+            <span class="step-dot"></span>
+            <span class="step-text">Reading resume...</span>
+          </div>
+          <div class="step" id="step2">
+            <span class="step-dot"></span>
+            <span class="step-text">Extracting skills...</span>
+          </div>
+          <div class="step" id="step3">
+            <span class="step-dot"></span>
+            <span class="step-text">Matching job roles...</span>
+          </div>
+          <div class="step" id="step4">
+            <span class="step-dot"></span>
+            <span class="step-text">Analyzing skill gaps...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="screen-results" class="screen">
+      <!-- Skills Row -->
+      <div class="section-header">
+        <span class="section-tag">DETECTED SKILLS</span>
+        <span class="skill-count" id="skillCount">0</span>
+      </div>
+      <div class="skills-cloud" id="skillsCloud"></div>
+
+      <!-- Job Matches -->
+      <div class="section-header" style="margin-top:18px">
+        <span class="section-tag">JOB MATCHES</span>
+        <span class="match-legend">
+          <span class="legend-dot good"></span>Strong
+          <span class="legend-dot mid" style="margin-left:8px"></span>Good
+        </span>
+      </div>
+      <div class="jobs-list" id="jobsList"></div>
+
+      <!-- Footer Actions -->
+      <div class="results-footer">
+        <button class="btn-reset" id="resetBtn">← New Resume</button>
+        <button class="btn-export" id="exportBtn">Export Report</button>
+      </div>
+    </div>
+
+    <!-- Error Screen -->
+    <div id="screen-error" class="screen">
+      <div class="error-container">
+        <div class="error-icon">⚠</div>
+        <p class="error-message" id="errorMessage">Something went wrong.</p>
+        <button class="btn-reset" id="errorResetBtn">Try Again</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
